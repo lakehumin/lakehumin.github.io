@@ -3,16 +3,25 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Archive: 2016 | Lake&#39;s Blog</title>
+    <title>TCP相关思考 | Lake&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Lake&#39;s Blog">
-<meta property="og:url" content="http://lakehumin.github.io/archives/2016/index.html">
+        <meta name="keywords" content="网络" />
+    
+    <meta name="description" content="TCP相关思考TCP三次握手TCP之所以需要三次握手，问题的本质是一个通信问题。即在信道不可靠的情况下，如何使通信双方就某一问题达成一致。这就需要通信的双方通过某种方式来保证信道在一定程度上可靠。因此，要让通信的双方都能确认自己的信息能传达到对方，同时能够收到对方的信息。如此，信息一去一来，对任意一方来说都需要两次握手">
+<meta name="keywords" content="网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP相关思考">
+<meta property="og:url" content="http://lakehumin.github.io/2018/02/25/TCP/index.html">
 <meta property="og:site_name" content="Lake&#39;s Blog">
+<meta property="og:description" content="TCP相关思考TCP三次握手TCP之所以需要三次握手，问题的本质是一个通信问题。即在信道不可靠的情况下，如何使通信双方就某一问题达成一致。这就需要通信的双方通过某种方式来保证信道在一定程度上可靠。因此，要让通信的双方都能确认自己的信息能传达到对方，同时能够收到对方的信息。如此，信息一去一来，对任意一方来说都需要两次握手才能让他自己确认，自己的信息能被对方接收同时自己能正确接收对方的信息。结论，三">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://lakehumin.github.io/2018/02/25/TCP/default.jpg">
+<meta property="og:updated_time" content="2018-02-25T02:11:08.675Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lake&#39;s Blog">
+<meta name="twitter:title" content="TCP相关思考">
+<meta name="twitter:description" content="TCP相关思考TCP三次握手TCP之所以需要三次握手，问题的本质是一个通信问题。即在信道不可靠的情况下，如何使通信双方就某一问题达成一致。这就需要通信的双方通过某种方式来保证信道在一定程度上可靠。因此，要让通信的双方都能确认自己的信息能传达到对方，同时能够收到对方的信息。如此，信息一去一来，对任意一方来说都需要两次握手才能让他自己确认，自己的信息能被对方接收同时自己能正确接收对方的信息。结论，三">
+<meta name="twitter:image" content="http://lakehumin.github.io/2018/02/25/TCP/default.jpg">
     
 
     
@@ -127,75 +136,126 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-archive"></i>Archive: 2016
+    <a class="page-title-link" href="/categories/思考总结/">思考总结</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            
-
-    
-    
+                            <article id="post-TCP" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        
-        <section class="archives-wrap">
-            <div class="archive-year-wrap">
-                <a href="/archives/2016" class="archive-year"><i class="icon fa fa-calendar-o"></i>2016</a>
-            </div>
-            <div class="archives">
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/2016/12/08/BaiduMapAPI/" class="thumbnail">
-    
-    
-        <span style="background-image:url(/2016/12/08/BaiduMapAPI/baiduMap.jpg)" alt="百度地图离线API制作" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="http://lakehumin.github.io/2016/12/08/BaiduMapAPI/">0</span>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/开发工具/">开发工具</a>
-            </div>
-            <div class="date"><time datetime="2016-12-08T07:47:17.000Z" itemprop="datePublished">2016-12-08</time></div>
-        </div>
-        
+            <header class="article-header">
+                
     
         <h1 class="article-title" itemprop="name">
-        <a href="/2016/12/08/BaiduMapAPI/">百度地图离线API制作</a>
+        TCP相关思考
         </h1>
     
 
-        <p class="article-excerpt">
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2018/02/25/TCP/" class="article-date">
+            <time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time>
+        </a>
+    </div>
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/网络/">网络</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <img src="/2018/02/25/TCP/default.jpg" title="TCP">
+<h1 id="TCP相关思考"><a href="#TCP相关思考" class="headerlink" title="TCP相关思考"></a>TCP相关思考</h1><h2 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h2><p>TCP之所以需要三次握手，问题的本质是一个通信问题。即在信道不可靠的情况下，如何使通信双方就某一问题达成一致。这就需要通信的双方通过某种方式来保证信道在一定程度上可靠。<br>因此，要让通信的双方都能确认自己的信息能传达到对方，同时能够收到对方的信息。如此，信息一去一来，对任意一方来说都需要两次握手才能让他自己确认，自己的信息能被对方接收同时自己能正确接收对方的信息。结论，三次通信是理论上的最小值。<br><strong>通信双方经过三次握手达成建立连接的共识后，自然而然解决掉了诸多通信的异常问题。因此用解决“为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误”之类的说法说明三次握手的作用不够准确。三次握手的实质就是通信双方基于不那么可靠的信道建立可靠通信连接的一种方式。</strong></p>
+<h2 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h2><p>TCP通信的双方断开连接需要双方确认没有数据发送并请求断开，在已经建立连接的情况下理论上需要双方各两次通信。一次请求，一次ACK，可以确认一方没有数据发送并断开连接。但最后一次ACK怎么确保一定送达，这里通过time_wait状态加上重试机制保证。<br>当一方发出最后一个ACK后等待2MSL时间，期间若对方没有收到ACK必会重试，2MSL内必会收到重试FIN报文。因此，保证了2MSL时间后对方收到ACK，可以正常断开TCP连接。<br><strong>个人觉得2MSL不够准确，应该取MSL+超时重传累积时间的总和。猜测取2MSL是因为，最差可能是1MSL后重试，并且重试一次足矣，网络也没那么差</strong></p>
+<h2 id="TCP心跳的意义"><a href="#TCP心跳的意义" class="headerlink" title="TCP心跳的意义"></a>TCP心跳的意义</h2><p>由于TCP连接是虚拟的连接，当一方断网或是断电等异常断开后，另一方是无法知道TCP连接已经断开的。为了减少这种不必要的连接<strong>浪费资源</strong>，需要心跳及时发现连接断开这种情况。心跳有TCP自带的keep_alive和应用层心跳。<strong>重点：运营商也会断掉长时间没有数据的连接</strong></p>
+
+        </div>
+        <footer class="article-footer">
             
-百度地图离线API制作，以API v1.3为例。更高版本请自行搜索。
-第一步访问 http://api.map.baidu.com/api?v=1.3 得到如下内容12345678(function()&#123;    window.wise=1;    window.netSpeed=254;    window.netType=1;    window.BMap_loadScriptTim
-        </p>
+
+
+
+    <a data-url="http://lakehumin.github.io/2018/02/25/TCP/" data-id="cje25twgx0000vgomb4g454c9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
     </div>
 </article>
+
+    <section id="comments">
     
-        </div>
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
     
-
-
-    </div></section>
-
+    </section>
 
 
                         </div>
@@ -248,6 +308,19 @@
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/07/29/curlgooglecom/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">浏览器访问google.com后发生了什么？</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
     
     <div class="widgets-container">
         
@@ -409,11 +482,13 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
+    var disqus_url = 'http://lakehumin.github.io/2018/02/25/TCP/';
+    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
