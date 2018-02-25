@@ -139,6 +139,123 @@
         
         <section class="archives-wrap">
             <div class="archive-year-wrap">
+                <a href="/archives/2018" class="archive-year"><i class="icon fa fa-calendar-o"></i>2018</a>
+            </div>
+            <div class="archives">
+    
+    
+    
+        <div class="article-row">
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2018/02/25/ZooKeeperNote/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2018/02/25/ZooKeeperNote/default.jpg)" alt="ZooKeeper学习笔记" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="http://lakehumin.github.io/2018/02/25/ZooKeeperNote/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/学习笔记/">学习笔记</a>
+            </div>
+            <div class="date"><time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2018/02/25/ZooKeeperNote/">ZooKeeper学习笔记</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+FastLeaderElection选举算法核心思想通过不断更新自己的选举结果，广播消息，让其他人知道自己的推荐leader，来让所有人尽快达成一致
+一些概念
+electionEpoch  它是选举算法FastLeaderElection的一个属性（也被叫做logicalclock），在zookeeper的server启动的时候就会创建选举算法，该值初始是0，之后该server每执行一次选举，e
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/2018/02/25/paxos/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2018/02/25/paxos/default.jpg)" alt="paxos算法学习总结" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+        <span class="disqus-comment-count" data-disqus-identifier="" data-disqus-url="http://lakehumin.github.io/2018/02/25/paxos/">0</span>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/学习笔记/">学习笔记</a>
+            </div>
+            <div class="date"><time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/2018/02/25/paxos/">paxos算法学习总结</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+核心思想分布式系统架构下如何让整体尽快达成一致观点，也就是多个不同观点收敛到一个观点的过程。
+难点
+可能会发生少数节点故障，但绝不是大面积故障，不然系统也没法正常工作。
+由于存在单点故障，因此不可能将观点由某一台机器的统一。共享内存达到一致性的方案不可取。因此，只能是点对点通信。
+
+一些概念
+算法中有三个角色Proposor，Acceptor，Learner
+算法有两个阶段，一是预提案，二是正式
+        </p>
+    </div>
+</article>
+    
+        </div>
+    
+
+    
+    
+        
+            </div></section>
+        
+        
+        <section class="archives-wrap">
+            <div class="archive-year-wrap">
                 <a href="/archives/2017" class="archive-year"><i class="icon fa fa-calendar-o"></i>2017</a>
             </div>
             <div class="archives">
@@ -188,8 +305,6 @@
         </p>
     </div>
 </article>
-    
-        </div>
     
 
 
@@ -281,6 +396,46 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2018/02/25/ZooKeeperNote/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2018/02/25/ZooKeeperNote/default.jpg)" alt="ZooKeeper学习笔记" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/学习笔记/">学习笔记</a></p>
+                            <p class="item-title"><a href="/2018/02/25/ZooKeeperNote/" class="title">ZooKeeper学习笔记</a></p>
+                            <p class="item-date"><time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2018/02/25/paxos/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2018/02/25/paxos/default.jpg)" alt="paxos算法学习总结" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/学习笔记/">学习笔记</a></p>
+                            <p class="item-title"><a href="/2018/02/25/paxos/" class="title">paxos算法学习总结</a></p>
+                            <p class="item-date"><time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/07/29/curlgooglecom/" class="thumbnail">
     
     
@@ -327,7 +482,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习笔记/">学习笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考总结/">思考总结</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习笔记/">学习笔记</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/思考总结/">思考总结</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -337,7 +492,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -347,7 +502,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/">WEB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/百度地图/">百度地图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/WEB/">WEB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/">ZooKeeper</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paxos/">paxos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/一致性/">一致性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/百度地图/">百度地图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -357,7 +512,7 @@
     <div class="widget-wrap widget-float">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+            <a href="/tags/WEB/" style="font-size: 10px;">WEB</a> <a href="/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/tags/paxos/" style="font-size: 10px;">paxos</a> <a href="/tags/一致性/" style="font-size: 10px;">一致性</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
         </div>
     </div>
 
