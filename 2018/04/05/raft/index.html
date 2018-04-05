@@ -3,25 +3,25 @@
 <head>
     <meta charset="utf-8">
     
-    <title>ZooKeeper学习笔记 | Lake&#39;s Blog</title>
+    <title>Raft学习笔记 | Lake&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="ZooKeeper" />
+        <meta name="keywords" content="一致性,raft" />
     
-    <meta name="description" content="FastLeaderElection选举算法核心思想通过不断更新自己的选举结果，广播消息，让其他人知道自己的推荐leader，来让所有人尽快达成一致 一些概念 electionEpoch  它是选举算法FastLeaderElection的一个属性（也被叫做logicalclock），在zookeeper的server">
-<meta name="keywords" content="ZooKeeper">
+    <meta name="description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发">
+<meta name="keywords" content="一致性,raft">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ZooKeeper学习笔记">
-<meta property="og:url" content="http://lakehumin.github.io/2018/02/25/ZooKeeperNote/index.html">
+<meta property="og:title" content="Raft学习笔记">
+<meta property="og:url" content="http://lakehumin.github.io/2018/04/05/raft/index.html">
 <meta property="og:site_name" content="Lake&#39;s Blog">
-<meta property="og:description" content="FastLeaderElection选举算法核心思想通过不断更新自己的选举结果，广播消息，让其他人知道自己的推荐leader，来让所有人尽快达成一致 一些概念 electionEpoch  它是选举算法FastLeaderElection的一个属性（也被叫做logicalclock），在zookeeper的server启动的时候就会创建选举算法，该值初始是0，之后该server每执行一次选举，e">
+<meta property="og:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。 MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://lakehumin.github.io/2018/02/25/ZooKeeperNote/default.jpg">
-<meta property="og:updated_time" content="2018-02-25T02:35:58.151Z">
+<meta property="og:image" content="http://lakehumin.github.io/2018/04/05/raft/default.jpg">
+<meta property="og:updated_time" content="2018-04-05T10:30:46.241Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZooKeeper学习笔记">
-<meta name="twitter:description" content="FastLeaderElection选举算法核心思想通过不断更新自己的选举结果，广播消息，让其他人知道自己的推荐leader，来让所有人尽快达成一致 一些概念 electionEpoch  它是选举算法FastLeaderElection的一个属性（也被叫做logicalclock），在zookeeper的server启动的时候就会创建选举算法，该值初始是0，之后该server每执行一次选举，e">
-<meta name="twitter:image" content="http://lakehumin.github.io/2018/02/25/ZooKeeperNote/default.jpg">
+<meta name="twitter:title" content="Raft学习笔记">
+<meta name="twitter:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。 MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10">
+<meta name="twitter:image" content="http://lakehumin.github.io/2018/04/05/raft/default.jpg">
     
 
     
@@ -140,14 +140,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-ZooKeeperNote" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-raft" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        ZooKeeper学习笔记
+        Raft学习笔记
         </h1>
     
 
@@ -157,65 +157,123 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2018/02/25/ZooKeeperNote/" class="article-date">
-            <time datetime="2018-02-25T02:07:12.000Z" itemprop="datePublished">2018-02-25</time>
+        <a href="/2018/04/05/raft/" class="article-date">
+            <time datetime="2018-04-05T10:18:17.000Z" itemprop="datePublished">2018-04-05</time>
         </a>
     </div>
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/ZooKeeper/">ZooKeeper</a>
+        <a class="tag-link" href="/tags/raft/">raft</a>, <a class="tag-link" href="/tags/一致性/">一致性</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <img src="/2018/02/25/ZooKeeperNote/default.jpg" title="ZooKeeper">
-<h2 id="FastLeaderElection选举算法"><a href="#FastLeaderElection选举算法" class="headerlink" title="FastLeaderElection选举算法"></a>FastLeaderElection选举算法</h2><h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>通过不断更新自己的选举结果，广播消息，让其他人知道自己的推荐leader，来让所有人尽快达成一致</p>
-<h3 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h3><ul>
-<li><strong>electionEpoch</strong><br>  它是选举算法FastLeaderElection的一个属性（也被叫做logicalclock），在zookeeper的server启动的时候就会创建选举算法，该值初始是0，之后该server每执行一次选举，electionEpoch 就会自增，同时在选举的时候，一旦别人的投票中的electionEpoch 比自己的大，也会更新自己的electionEpoch来和别人保持一致</li>
-<li><strong>proposedLeader</strong><br>  推荐的leader id。为被推荐leader的myid的值</li>
-<li><strong>proposedZxid</strong><br>  推荐leader的最大事务zxid，由本地文件恢复得到，为被推荐leader机器的lastProcessedZxid。表示该被推荐的leader所保留的最新的事务，用于选举的比较</li>
-<li><strong>proposedEpoch</strong><br>  peerEpoch值，由上述的lastProcessedZxid的高32得到</li>
-</ul>
-<h3 id="一些理念"><a href="#一些理念" class="headerlink" title="一些理念"></a>一些理念</h3><ul>
-<li><strong>若是选出leader，再收到投票消息会直接返回选举结果</strong></li>
-<li><strong>判断规则</strong><br>  先比较peerEpoch，再zxid，最后是myid，胜者被推荐为leader</li>
-<li><strong>系统稳定运行的关键</strong><br>  有一个Leader，并且多数Follower认可这个Leader</li>
-<li><strong>大多数认定即可</strong></li>
-</ul>
-<h3 id="一些疑问"><a href="#一些疑问" class="headerlink" title="一些疑问"></a>一些疑问</h3><ol>
-<li><strong>为什么收到消息的electionEpoch大于当前logicallock后，会更新logicallock为收到的electionEpoch，并清空票箱recvset</strong><br> 是为了保证这是最新的同一次选举</li>
-<li><strong>为什么收到的logicalclock比自己小时不予理睬</strong><br> 此算法的核心思想是接收消息，更新自己，再通知大家，直到选出leader。比自己小时不用更新自己，没必要回复，减少不必要的信息传输。后面自然会有更新消息通知到他，让其更新logicalclock。</li>
-<li><strong>当统计选票确定leader后，如何确保其他大多数机器也认为该leader合法</strong><br> 由于目的是实现系统稳定运行，选出leader。不管过程怎样最后是系统稳定运行的状态即可。当统计选票确定leader后会等待一段时间，看是否有更优的提议，没有就确认当前推荐leader为正式leader，确定对应状态是leader还是follower。其实这一步也只能基本保证该leader合法。不过没关系，由于leader会不断检测是否依然有多个follower认定自己是leader，follower也会根据leader是否有不断给自己心跳来确定leader是否有效。因此，若出现最初统计的leader不合法后，会再次进行选举，最后一定会形成系统稳定运行的状态。</li>
-</ol>
-<h3 id="选举流程"><a href="#选举流程" class="headerlink" title="选举流程"></a>选举流程</h3><ol>
-<li>发起选举logicalclock++，推荐自己为leader，设置当前投票为本机myid, lastProcessedZxid, peerEpoch。并通知所有服务器。</li>
-<li>只要当前服务器状态为LOOKING，进入循环，不断地读取其它Server发来的通知、进行比较、更新自己的投票、发送自己的投票、统计投票结果，直到leader选出或出错退出。收到通知后，根据对方状态进行处理<ul>
-<li>LOOKING状态<ol>
-<li>如果发送过来的逻辑时钟大于目前的逻辑时钟，那么说明这是更新的一次选举投票，此时更新本机的逻辑时钟logicalclock，清空投票箱（因为已经过期没有用了），调用totalOrderPredicate函数判断对方的投票是否优于当前的投票（判断规则上面提过了），是的话用对方推荐的leader更新下一次的投票，否则使用初始的投票（投自己），最后都将调用sendNotifications() 通知所有服务器我的选择，并将投票信息放入投票箱recvset。</li>
-<li>如果对方处于上轮投票，即electionEpoch比我小，则不予理睬</li>
-<li>如果对方也处于本轮投票，调用totalOrderPredicate函数判断对方的投票是否优于当前的投票，是的话更新当前的投票并新生成notification消息放入发送队列，否则使用初始的投票（投自己）不发送通知。投票信息放入投票箱。</li>
-<li>统计投票结果，判断所推荐的leader是否得到集群多数人的同意（根据计票器的实现不同，可以是单纯看数量是否超过n/2，也可以是按权重来判断，我们这里假设单纯看数量），如果得到多数人同意，那么还需等待一段时间，看是否有比当前更优的提议，如果没有，则认为投票结束。根据投票结果修改自己的状态。以上任何一条不满足，则继续循环。</li>
-</ol>
-</li>
-<li>OBSERVING状态<br>  不做任何事</li>
-<li>FOLLOWING或LEADING状态<ol>
-<li>如果选举周期相同（选票是同一轮选举产生），将该数据保存到投票箱，根据当前投票箱的投票判断对方推荐的leader是否得到多数人的同意，如果是则设置状态退出选举过程，否则执行下面第2步。</li>
-<li>这是一条与当前逻辑时钟不符合的消息，或者对方推荐的leader没有得到多数人的同意（有可能是收集到的投票数不够），那么说明可能在另一个选举过程中已经有了选举结果，于是将该选举结果加入到outofelection集合中，再根据outofelection来判断是否可以结束选举，如果可以也是保存逻辑时钟，设置状态，退出选举过程。否则继续循环。outofelection用于保存那些状态为FOLLOWING或者LEADING的ZooKeeper节点发送的选票，由于对方的状态为FOLLOWING或者LEADING，所以它们当前不参与选举过程（可能人家已经选完了），因此称为“out of election”。</li>
-</ol>
+            <img src="/2018/04/05/raft/default.jpg" title="raft">
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><ol>
+<li><p>broadcastTime&lt;&lt;electionTimeout&lt;&lt;MTBF</p>
+<ul>
+<li>broadcastTime。leader发送心跳的时间间隔</li>
+<li>electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。</li>
+<li><p>MTBF。服务器发生故障的时间间隔。</p>
+<p>MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10ms-500ms。broadcastTime应该比electionTimeout小一个数量级，为0.5ms-20ms。</p>
 </li>
 </ul>
 </li>
+<li>server有三种状态follower、candidate、leader。系统初始为follower状态，超过electionTimeout开始选举。没选出结果超出electionTimeout，继续开始下一轮选举。<br><img src="state.jpg" alt=""></li>
+<li>三种角色分工<ul>
+<li>leader：负责日志的同步管理，处理来自客户端的请求，与follower保持这heartBeat的联系</li>
+<li>follower：刚启动时所有节点为follower状态，响应leader的日志同步请求，响应candidate的请求，把请求到follower的事务转发给leader</li>
+<li>candidate：负责选举投票，Raft刚启动时由一个节点从follower转为candidate发起选举，选举出leader后从candidate转为leader状态</li>
+</ul>
+</li>
+<li><p>服务器状态<br> 在所有服务器上持久存在的：（在响应远程过程调用 RPC 之前稳定存储的）</p>
+<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | currentTerm | 服务器最后知道的任期号（从0开始递增）                         |<br> | votedFor    | 在当前任期内收到选票的候选人 id（如果没有就为 null）           |<br> | log[]       | 日志条目；每个条目包含状态机的要执行命令和从领导人处收到时的任期号 |</p>
+<p> 在所有服务器上不稳定存在的：</p>
+<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | commitIndex | 已知的被提交的最大日志条目的索引值（从0开始递增）               |<br> | lastApplied | 被状态机执行的最大日志条目的索引值（从0开始递增）               |<br> 在领导人服务器上不稳定存在的：（在选举之后初始化的）</p>
+<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | nextIndex[] | 对于每一个服务器，记录需要发给它的下一个日志条目的索引（初始化为领导人上一条日志的索引值+1）|<br> | matchIndex[]| 对于每一个服务器，记录已经复制到该服务器的日志的最高索引值（从0开始递增）                     |</p>
+</li>
 </ol>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://my.oschina.net/pingpangkuangmo/blog/778927" target="_blank" rel="noopener">ZooKeeper的一致性算法赏析</a><br><a href="http://www.jasongj.com/zookeeper/fastleaderelection/" target="_blank" rel="noopener">Zookeeper架构及FastLeaderElection机制</a><br><a href="https://www.jianshu.com/p/ccaecde36dd3" target="_blank" rel="noopener">Zookeeper的FastLeaderElection算法分析</a></p>
-<h2 id="zookeeper一致性保证"><a href="#zookeeper一致性保证" class="headerlink" title="zookeeper一致性保证"></a>zookeeper一致性保证</h2><ol>
-<li>所有机器按照事务zxid顺序执行便能实现最终一致性</li>
-<li>先发起proposal，获得过半ACK后发起commit。两段提交保证响应成功即事务操作成功。集群最终将全部实现该操作。</li>
+<ol>
+<li><p>RequestVote RPC数据格式</p>
+<p> | 参数          | 描述                      |<br> | :———-: |:————————:|<br> | term         | 候选人的任期号              |<br> | candidateId  | 请求投票的候选人 id         |<br> | lastLogIndex | 候选人最新日志条目的索引值    |<br> | lastLogTerm  | 候选人最新日志条目对应的任期号 |</p>
+<p> | 返回值       | 描述                        |<br> | :———: |:————————–:|<br> | term        | 目前的任期号，用于候选人更新自己 |<br> | voteGranted | 如果候选人收到选票为 true      |</p>
+</li>
+<li><p>AppendEntries RPC数据格式</p>
+<p> | 参数          | 描述                                 |<br> | :———-: |:————————————:|<br> | term         | leader的任期号                         |<br> | leaderId     | leader的 id，为了其他服务器能重定向到leader |<br> | prevLogIndex | 最新日志之前的日志的索引值                |<br> | prevLogTerm  | 最新日志之前的日志的领导人任期号           |<br> | entries[]    | 将要存储的日志条目（表示 heartbeat 时为空，有时会为了效率发送超过一条）|<br> | leaderCommit | 领导人提交的日志条目索引值                |</p>
+<p> | 返回值   | 描述                                                           |<br> | :—–: |:————————————————————-:|<br> | term    | 当前的任期号，用于领导人更新自己的任期号                             |<br> | success | 如果其它服务器包含能够匹配上 prevLogIndex 和 prevLogTerm 的日志时为真|</p>
+</li>
 </ol>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.csdn.net/gs80140/article/details/51496925" target="_blank" rel="noopener">ZooKeeper应用场景及解析</a></p>
+<h2 id="一些疑惑"><a href="#一些疑惑" class="headerlink" title="一些疑惑"></a>一些疑惑</h2><ol>
+<li><strong>leader发送心跳后没有收到大多数（大多数指过半，下同）的回复会进入重新选举的状态吗</strong><br> 不会，也没必要。因为这样的leader由于没有大多数follower不会成功响应。另一分区则会进行选举选出term更高的leader。</li>
+<li><strong>客户端请求了follower之后如何定位到leader</strong><br> 每次AppendEntries RPC时会带上leaderId，因此follower接到客户端的请求后就能将请求转到leader了。</li>
+<li><strong>为什么follower收到candidate的RPC请求后为什么也会重置定时器继续follower的状态</strong><br> 为了减少leader的竞争，尽快选出leader</li>
+<li><strong>follower的votedFor会不会因为新leader被其他大多数选出来了，而跟着设置为这个leader</strong><br> 不会，设置为任何值都没意义。新leader已经选出，再不会有第二个能获取过半投票。所以可能出现leader选出后，他投票给另一个candidate。</li>
+<li><strong>若是某个follower故障导致进入选举会引起集群选举吗</strong><br> 会的，因为此时的term++后比任何服务器都新，会造成所以其他收到RequestVote RPC的服务器更新term变成follower，重新选举。</li>
+<li><strong>如何确保快速选出leader</strong><br> 进入选举后很有可能出现选票瓜分的情况，没有一个candidate获得超过半数。发生electionTimeout后重新选举，由于electionTimeout随机，所以必有某服务器先进入选举，有更大可能成为leader，从而能很快的结束选举，选出leader。</li>
+<li><strong>candidate收到AppendEntries RPC后，若对方term与自己相等为什么也会变为follower</strong><br> 此时自己没有对方更新的数据，且对方已经被大多数承认为leader，为了快速选出leader没必要继续选举。</li>
+<li><strong>如何保证同任期同index的日志内容一样</strong><br> 每台机器都会保存某一任期的投票情况，且一旦投票就不会发生改变。选leader的时候，是收集指定任期的选票情况，过半数才能选为leader。这就保证了具体某一任期的leader独一无二。不会出现两个leader任期相同的情况。然后日志index又是leader给的，所以同任期同index的日志必定是一样的。</li>
+<li><strong>是否存在不同任期的日志同index。若存在，那解决日志冲突时会不会出现日志index不连续的情况</strong><br> 存在的。每个日志的追加leader都会按日志index递增，但leader挂了后，会选出新的leader，此时新leader可能没同步到上一个leader的日志，于是就可能出现同index不同任期的日志。但不管怎样对每一个leader来说他们都维护了index的递增，所以最好无论是谁的日志覆盖了谁，最好的index应该都是连续递增的。</li>
+<li><strong>为何同任期同index的日志，他们之前的日志也一定相同</strong><br>因为日志append的时候会判断之前的任期和index，只有相同才能append成功，再加上同任期同index日志内容相同的结论。类似数据归纳法，逐个类推，之前所有日志全部相同。</li>
+<li><strong>Raft从来不会通过计算复制的数目来提交之前任期的日志条目</strong><br>只有领导人当前任期的日志条目才能通过计算数目来进行提交。一旦当前任期的日志条目以这种方式被提交，那么由于日志匹配原则，之前的日志条目也都会被间接的提交。原因考虑下面的情况：<br><img src="example.jpg" alt=""><br>a阶段s1为leader，任期为2。b阶段s5变为leader，任期3。c阶段leader又变成了s1，此时term2index2的日志复制给了大多数，但该日志并不能变成已提交状态。因为此时s1的任期为4，这是在复制以前任期的日志。由于可能出现d阶段s5重新变为leader把term2index2的日志覆盖的情况，所以只能等到e阶段s1将term4index3的日志（属于当前任期的日志）复制给了大多数后，确定term4index3为已提交状态，同时间接将term2index2日志设为已提交。</li>
+<li><strong>为何只要leader的AppendEntries RPC收到大多数回复就可以认为该日志为已提交</strong><br>因为若此时leader挂掉，那么由于大多数都有这条最新的日志，选出来的leader必定也有。那么新leader给其他follower同步日志的时候一定会带上这条日志，若新leader有新的日志提交，那么这条日志必定间接提交。若没有新提交那么，该leader再挂，再次选出来的leader也一定包含这条日志（因为一定是因为有最新的日志才会成为新leader，而新的日志必定是上一个leader加上的，考虑prevLogIndex，所以新leader也会带着那条日志），那么问题又回来了。<br>若最初始leader没挂，而是新加了几条日志再挂，新加的日志若成功必定含有该日志，问题回到上面。若不成功（准确说是不确定），则依然是上面的两个问题之一。</li>
+<li><strong>若leader的AppendEntries RPC没收到大多数回复该怎么返回</strong><br>若是没有大多数，则可能换leader后，被不带有该日志的leader把其截掉。也可能被带有该日志的leader复制给所有机器。所以都有可能，不确定，返回给客户端不确定的答案，如超时，让他重试。</li>
+<li><strong>客户端发起重试的时候怎么确保已经执行过的操作不被重复执行</strong><br>当客户端没收到leader的回复时，可能是leader不确定答案，可能是leader挂了，也可能是leader回复网络丢包等等。此时客户端对同一log发起重试，若之前已经执行过那么这次不应该让leader再次执行。怎么判断这是同一次操作呢？解决办法是，客户端对每条指令都会有一个唯一的序列号。</li>
+<li><strong>新leader选出来的时候它是不知道以往日志的提交情况的，往往需要在自己任期提交一次才能确定之前的所有日志为已提交，怎么优化这点</strong><br>之前的leader可能已经设置某log为已提交，但是新leader可能还没有收到commitIndex的更新。那么之后为了确认之前的日志的提交情况，它必须在自己任期成功提交一次。当然你不能等客户端在你任期发起请求，然后你才有机会提交一次。所以最后解决办法是，选为leader的初始发送一个带有空操作log的AppendEntries RPC，一旦成功便可以确认之前所有的提交。</li>
+</ol>
+<h2 id="一些流程"><a href="#一些流程" class="headerlink" title="一些流程"></a>一些流程</h2><h3 id="选举过程"><a href="#选举过程" class="headerlink" title="选举过程"></a>选举过程</h3><ol>
+<li>转变为candidate开始选举<ul>
+<li>candidate的currentTerm++</li>
+<li>给自己投票</li>
+<li>重置选举计时器</li>
+<li>向其他服务器发送RequestVote RPC</li>
+</ul>
+</li>
+<li>如果收到了来自大多数服务器的投票，则成为leader，并立即发送AppendEntries RPC，以保持leader正常运转。</li>
+<li>如果收到了来自其他leader的AppendEntries RPC（heartbeat），则看term是否大于等于currentTerm。是则转换状态为追随者，否则拒绝该请求。</li>
+<li>如果选举超时，开始新一轮的选举</li>
+</ol>
+<h3 id="log复制过程"><a href="#log复制过程" class="headerlink" title="log复制过程"></a>log复制过程</h3><ol>
+<li>客户端请求leader,leader将该请求追加到本地log</li>
+<li>向follower发起AppendEntries RPC</li>
+<li>当大多数follower回复成功后，设置log为已提交，回复客户端并apply到状态机（操作顺序无所谓，只要大多数回复，后面都是成立的）。</li>
+</ol>
+<h2 id="一些规则"><a href="#一些规则" class="headerlink" title="一些规则"></a>一些规则</h2><ul>
+<li><strong>所以服务器遵守的规则</strong><ul>
+<li>如果commitIndex &gt; lastApplied，lastApplied自增，将log[lastApplied]应用到状态机</li>
+<li>如果RPC的请求或者响应中包含一个term T大于currentTerm，则currentTerm赋值为T，并切换状态为follower</li>
+<li>一个term只能投票给一个服务器</li>
+</ul>
+</li>
+<li><strong>follower遵守的规则</strong><ul>
+<li>响应来自候选人和领导人的 RPC</li>
+<li>如果在超过选取领导人时间之前没有收到来自当前领导人的AppendEntries RPC或者没有收到候选人的投票请求，则自己转换状态为候选人。反之收到了，则重置定时器。</li>
+<li>收到RequestVote RPC后<ul>
+<li>若term&lt;currentTerm，返回false</li>
+<li>若term&gt;=currentTerm（都变为candidate的时候可能出现=），则看votedFor是否为null，不是则返回当前投票votedFor是否等于请求的候选人Id。是则比较谁的log更新，即比较lastLogTerm和lastLogIndex。比自己新或是一样新则返回true，并设置votedFor。</li>
+</ul>
+</li>
+<li>收到AppendEntries RPC后<ul>
+<li>若term&lt;currentTerm，返回false</li>
+<li>若prevLogIndex和prevLogTerm能够匹配到自己的log[]中的某条log，则将entries[]应用到prevLogIndex和prevLogTerm后面的日志。否则不能匹配则返回false。</li>
+<li>如果leaderCommit &gt; commitIndex，并且此次RPC将要返回true则设置commitIndex= leaderCommit。（你要保证应用到状态机的log和leader一样才行）</li>
+</ul>
+</li>
+<li>经过一系列的AppendEntries RPC后，日志最终会和leader同步</li>
+</ul>
+</li>
+<li><strong>leader遵守的规则</strong><ul>
+<li>成为leader后，向其他所有服务器发送带空操作log的AppendEntries RPC，在空闲时间重复发送以防止选举超时。</li>
+<li>如果收到来自客户端的请求，向本地日志增加条目，并试图复制给其他机器，在收到大多数机器回复后响应客户端成功并设置该日志为已提交，更新commitIndex。</li>
+<li>如果follower崩溃了或者运行缓慢或者是网络丢包了，leader会无限的重试AppendEntries RPC（甚至在它向客户端响应之后）直到所有的follower最终存储了所有的日志条目。</li>
+<li>每次给follower AppendEntries RPC时会把nextIndex后的所有日志发出去，若follower匹配prevLogIndex和prevLogTerm后返回成功，则更新对应follower的nextIndex和matchIndex。若返回false，则nextIndex减1，下次AppendEntries RPC时重新发送。</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://link.zhihu.com/?target=https%3A//raft.github.io/raft.pdf" target="_blank" rel="noopener">raft英文原版文献</a><br><a href="http://www.infoq.com/cn/articles/raft-paper" target="_blank" rel="noopener">raft中文</a><br><a href="http://thesecretlivesofdata.com/raft/#intro" target="_blank" rel="noopener">raft小动画</a></p>
 
         </div>
         <footer class="article-footer">
@@ -223,7 +281,7 @@
 
 
 
-    <a data-url="http://lakehumin.github.io/2018/02/25/ZooKeeperNote/" data-id="cjfmdsr5x0001i0omikpfj8t2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://lakehumin.github.io/2018/04/05/raft/" data-id="cjfmdsr870005i0omki8eo1q7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -352,20 +410,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2018/02/25/TCP/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">newer</strong>
-        <p class="article-nav-title">
-        
-            TCP相关思考
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/2018/02/25/paxos/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/02/25/TCP/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">older</strong>
-        <p class="article-nav-title">paxos算法学习总结</p>
+        <p class="article-nav-title">TCP相关思考</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -572,7 +620,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'http://lakehumin.github.io/2018/02/25/ZooKeeperNote/';
+    var disqus_url = 'http://lakehumin.github.io/2018/04/05/raft/';
     
     (function() {
     var dsq = document.createElement('script');
