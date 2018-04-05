@@ -14,13 +14,13 @@
 <meta property="og:title" content="Raft学习笔记">
 <meta property="og:url" content="http://lakehumin.github.io/2018/04/05/raft/index.html">
 <meta property="og:site_name" content="Lake&#39;s Blog">
-<meta property="og:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。 MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10">
+<meta property="og:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。    MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://lakehumin.github.io/2018/04/05/raft/default.jpg">
-<meta property="og:updated_time" content="2018-04-05T10:30:46.241Z">
+<meta property="og:updated_time" content="2018-04-05T12:28:28.300Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Raft学习笔记">
-<meta name="twitter:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。 MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10">
+<meta name="twitter:description" content="一些概念 broadcastTime&amp;lt;&amp;lt;electionTimeout&amp;lt;&amp;lt;MTBF  broadcastTime。leader发送心跳的时间间隔 electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。 MTBF。服务器发生故障的时间间隔。    MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般">
 <meta name="twitter:image" content="http://lakehumin.github.io/2018/04/05/raft/default.jpg">
     
 
@@ -158,7 +158,7 @@
                 
     <div class="article-date">
         <a href="/2018/04/05/raft/" class="article-date">
-            <time datetime="2018-04-05T10:18:17.000Z" itemprop="datePublished">2018-04-05</time>
+            <time datetime="2018-04-05T10:18:00.000Z" itemprop="datePublished">2018-04-05</time>
         </a>
     </div>
 
@@ -178,10 +178,9 @@
 <ul>
 <li>broadcastTime。leader发送心跳的时间间隔</li>
 <li>electionTimeout。选举超时时长（值随机），若这段时间内没有leader心跳触发选举。</li>
-<li><p>MTBF。服务器发生故障的时间间隔。</p>
-<p>MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10ms-500ms。broadcastTime应该比electionTimeout小一个数量级，为0.5ms-20ms。</p>
-</li>
+<li>MTBF。服务器发生故障的时间间隔。  </li>
 </ul>
+<p>MTBF一般为几个月以上。electionTimeout为机器故障时的不可用时长一般为10ms-500ms。broadcastTime应该比electionTimeout小一个数量级，为0.5ms-20ms。</p>
 </li>
 <li>server有三种状态follower、candidate、leader。系统初始为follower状态，超过electionTimeout开始选举。没选出结果超出electionTimeout，继续开始下一轮选举。<br><img src="state.jpg" alt=""></li>
 <li>三种角色分工<ul>
@@ -190,23 +189,167 @@
 <li>candidate：负责选举投票，Raft刚启动时由一个节点从follower转为candidate发起选举，选举出leader后从candidate转为leader状态</li>
 </ul>
 </li>
-<li><p>服务器状态<br> 在所有服务器上持久存在的：（在响应远程过程调用 RPC 之前稳定存储的）</p>
-<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | currentTerm | 服务器最后知道的任期号（从0开始递增）                         |<br> | votedFor    | 在当前任期内收到选票的候选人 id（如果没有就为 null）           |<br> | log[]       | 日志条目；每个条目包含状态机的要执行命令和从领导人处收到时的任期号 |</p>
-<p> 在所有服务器上不稳定存在的：</p>
-<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | commitIndex | 已知的被提交的最大日志条目的索引值（从0开始递增）               |<br> | lastApplied | 被状态机执行的最大日志条目的索引值（从0开始递增）               |<br> 在领导人服务器上不稳定存在的：（在选举之后初始化的）</p>
-<p> | 名称         | 描述                                                    |<br> | :———: |:——————————————————-:|<br> | nextIndex[] | 对于每一个服务器，记录需要发给它的下一个日志条目的索引（初始化为领导人上一条日志的索引值+1）|<br> | matchIndex[]| 对于每一个服务器，记录已经复制到该服务器的日志的最高索引值（从0开始递增）                     |</p>
-</li>
+<li>服务器状态及数据格式 </li>
 </ol>
-<ol>
-<li><p>RequestVote RPC数据格式</p>
-<p> | 参数          | 描述                      |<br> | :———-: |:————————:|<br> | term         | 候选人的任期号              |<br> | candidateId  | 请求投票的候选人 id         |<br> | lastLogIndex | 候选人最新日志条目的索引值    |<br> | lastLogTerm  | 候选人最新日志条目对应的任期号 |</p>
-<p> | 返回值       | 描述                        |<br> | :———: |:————————–:|<br> | term        | 目前的任期号，用于候选人更新自己 |<br> | voteGranted | 如果候选人收到选票为 true      |</p>
-</li>
-<li><p>AppendEntries RPC数据格式</p>
-<p> | 参数          | 描述                                 |<br> | :———-: |:————————————:|<br> | term         | leader的任期号                         |<br> | leaderId     | leader的 id，为了其他服务器能重定向到leader |<br> | prevLogIndex | 最新日志之前的日志的索引值                |<br> | prevLogTerm  | 最新日志之前的日志的领导人任期号           |<br> | entries[]    | 将要存储的日志条目（表示 heartbeat 时为空，有时会为了效率发送超过一条）|<br> | leaderCommit | 领导人提交的日志条目索引值                |</p>
-<p> | 返回值   | 描述                                                           |<br> | :—–: |:————————————————————-:|<br> | term    | 当前的任期号，用于领导人更新自己的任期号                             |<br> | success | 如果其它服务器包含能够匹配上 prevLogIndex 和 prevLogTerm 的日志时为真|</p>
-</li>
-</ol>
+<p>在所有服务器上持久存在的：（在响应远程过程调用 RPC 之前稳定存储的） </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">currentTerm</td>
+<td style="text-align:center">服务器最后知道的任期号（从0开始递增）</td>
+</tr>
+<tr>
+<td style="text-align:center">votedFor</td>
+<td style="text-align:center">在当前任期内收到选票的候选人 id（如果没有就为 null）</td>
+</tr>
+<tr>
+<td style="text-align:center">log[]</td>
+<td style="text-align:center">日志条目；每个条目包含状态机的要执行命令和从领导人处收到时的任期号</td>
+</tr>
+</tbody>
+</table>
+<p>在所有服务器上不稳定存在的：  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">commitIndex</td>
+<td style="text-align:center">已知的被提交的最大日志条目的索引值（从0开始递增）</td>
+</tr>
+<tr>
+<td style="text-align:center">lastApplied</td>
+<td style="text-align:center">被状态机执行的最大日志条目的索引值（从0开始递增）</td>
+</tr>
+</tbody>
+</table>
+<p>在领导人服务器上不稳定存在的：（在选举之后初始化的）</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">nextIndex[]</td>
+<td style="text-align:center">对于每一个服务器，记录需要发给它的下一个日志条目的索引（初始化为领导人上一条日志的索引值+1）</td>
+</tr>
+<tr>
+<td style="text-align:center">matchIndex[]</td>
+<td style="text-align:center">对于每一个服务器，记录已经复制到该服务器的日志的最高索引值（从0开始递增）</td>
+</tr>
+</tbody>
+</table>
+<p>RequestVote RPC数据格式  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">term</td>
+<td style="text-align:center">候选人的任期号</td>
+</tr>
+<tr>
+<td style="text-align:center">candidateId</td>
+<td style="text-align:center">请求投票的候选人 id</td>
+</tr>
+<tr>
+<td style="text-align:center">lastLogIndex</td>
+<td style="text-align:center">候选人最新日志条目的索引值</td>
+</tr>
+<tr>
+<td style="text-align:center">lastLogTerm</td>
+<td style="text-align:center">候选人最新日志条目对应的任期号</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">term</td>
+<td style="text-align:center">目前的任期号，用于候选人更新自己</td>
+</tr>
+<tr>
+<td style="text-align:center">voteGranted</td>
+<td style="text-align:center">如果候选人收到选票为 true</td>
+</tr>
+</tbody>
+</table>
+<p>AppendEntries RPC数据格式</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">term</td>
+<td style="text-align:center">leader的任期号</td>
+</tr>
+<tr>
+<td style="text-align:center">leaderId</td>
+<td style="text-align:center">leader的 id，为了其他服务器能重定向到leader</td>
+</tr>
+<tr>
+<td style="text-align:center">prevLogIndex</td>
+<td style="text-align:center">最新日志之前的日志的索引值</td>
+</tr>
+<tr>
+<td style="text-align:center">prevLogTerm</td>
+<td style="text-align:center">最新日志之前的日志的领导人任期号</td>
+</tr>
+<tr>
+<td style="text-align:center">entries[]</td>
+<td style="text-align:center">将要存储的日志条目（表示 heartbeat 时为空，有时会为了效率发送超过一条）</td>
+</tr>
+<tr>
+<td style="text-align:center">leaderCommit</td>
+<td style="text-align:center">领导人提交的日志条目索引值</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">term</td>
+<td style="text-align:center">当前的任期号，用于领导人更新自己的任期号</td>
+</tr>
+<tr>
+<td style="text-align:center">success</td>
+<td style="text-align:center">如果其它服务器包含能够匹配上 prevLogIndex 和 prevLogTerm 的日志时为真</td>
+</tr>
+</tbody>
+</table>
 <h2 id="一些疑惑"><a href="#一些疑惑" class="headerlink" title="一些疑惑"></a>一些疑惑</h2><ol>
 <li><strong>leader发送心跳后没有收到大多数（大多数指过半，下同）的回复会进入重新选举的状态吗</strong><br> 不会，也没必要。因为这样的leader由于没有大多数follower不会成功响应。另一分区则会进行选举选出term更高的leader。</li>
 <li><strong>客户端请求了follower之后如何定位到leader</strong><br> 每次AppendEntries RPC时会带上leaderId，因此follower接到客户端的请求后就能将请求转到leader了。</li>
@@ -281,7 +424,7 @@
 
 
 
-    <a data-url="http://lakehumin.github.io/2018/04/05/raft/" data-id="cjfmdsr870005i0omki8eo1q7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://lakehumin.github.io/2018/04/05/raft/" data-id="cjfmi25na0006l8om9xrs1bjw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -445,7 +588,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/学习笔记/">学习笔记</a></p>
                             <p class="item-title"><a href="/2018/04/05/raft/" class="title">Raft学习笔记</a></p>
-                            <p class="item-date"><time datetime="2018-04-05T10:18:17.000Z" itemprop="datePublished">2018-04-05</time></p>
+                            <p class="item-date"><time datetime="2018-04-05T10:18:00.000Z" itemprop="datePublished">2018-04-05</time></p>
                         </div>
                     </li>
                 
